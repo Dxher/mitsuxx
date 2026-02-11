@@ -162,7 +162,7 @@ export default function PaintingModal({ painting, isOpen, onClose }: PaintingMod
             {/* Painting surface */}
             <div className={styles.paintingSurface}>
               <img
-                src={painting.images[currentImageIndex]}
+                src={'/mitsuxx/' +painting.images[currentImageIndex]}
                 alt={painting.title}
                 className={styles.paintingImage}
                 draggable={false}

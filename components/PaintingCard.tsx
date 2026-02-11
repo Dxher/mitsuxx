@@ -21,7 +21,7 @@ export default function PaintingCard({ painting, onClick }: PaintingCardProps) {
         <div className={styles.canvasWrapper}>
           <div className={styles.paintingSurface}>
             <img
-              src={painting.images[0]}
+              src={'/mitsuxx/' +painting.images[0]}
               alt={painting.title}
               className={styles.paintingImage}
               draggable={false}

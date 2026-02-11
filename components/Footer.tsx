@@ -11,7 +11,7 @@ export default function Footer() {
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
               <img
-                src="/logo-clear.png"
+                src="/mitsuxx/logo-clear.png"
                 alt="Mistuxx logo"
                 width={130}
                 height={72}

@@ -29,7 +29,7 @@ export default function Navigation() {
       <nav className={styles.nav}>
         <Link href="/" className={styles.logo}>
           <img
-            src="/logo-clear.png"
+            src="/mitsuxx/logo-clear.png"
             alt="Mistuxx logo"
             width={180}
             height={72}
