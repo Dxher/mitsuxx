@@ -14,18 +14,35 @@
 
 /* Masonry-like Grid using Flexbox */
 .grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 1rem;
+  column-count: 4;
+  column-gap: 1.5rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1400px) {
+  .grid {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 500px) {
+  .grid {
+    column-count: 1;
+  }
 }
 
 .gridItem {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
 }
+
 
 .noResults {
   text-align: center;

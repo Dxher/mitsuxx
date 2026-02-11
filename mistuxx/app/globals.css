@@ -20,6 +20,8 @@
   
   /* Spacing */
   --nav-height: 80px;
+
+  --canvas-depth: 16px;
 }
 
 * {

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styles from "./Footer.module.css";
 
 export default function Footer() {
@@ -8,6 +9,15 @@ export default function Footer() {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.brand}>
+            <Link href="/" className={styles.logo}>
+              <img
+                src="/logo-clear.png"
+                alt="Mistuxx logo"
+                width={130}
+                height={72}
+                className={styles.logoImage}
+              />
+            </Link>
             <span className={styles.logo}>Mistuxx</span>
             <p className={styles.tagline}>Creating beauty, one brushstroke at a time</p>
           </div>

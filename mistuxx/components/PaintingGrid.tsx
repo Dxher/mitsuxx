@@ -1,14 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { paintings, categories, Painting } from "@/data/paintings";
+import { paintings, Painting } from "@/data/paintings";
 import PaintingCard from "./PaintingCard";
 import PaintingModal from "./PaintingModal";
 import styles from "./PaintingGrid.module.css";
 
+const BASELINE_AREA = 36 * 48;
+const COLUMN_WIDTH = 240;
+const ROW_HEIGHT = 8;
+
+interface DisplayConfig {
+  baseWidth: number;
+  rowSpan: number;
+  columnSpan: number;
+}
+
 export default function PaintingGrid() {
-  const [filter, setFilter] = useState<string>("All");
-  const [sortBy, setSortBy] = useState<string>("newest");
+  const [filter] = useState<string>("All");
+  const [sortBy] = useState<string>("newest");
   const [selectedPainting, setSelectedPainting] = useState<Painting | null>(null);
 
   const filteredPaintings = paintings
@@ -28,13 +38,22 @@ export default function PaintingGrid() {
       }
     });
 
-  const getBaseWidth = (painting: Painting): number => {
-    const maxDimension = Math.max(painting.dimensions.width, painting.dimensions.height);
-    
-    if (maxDimension >= 48) return 380;
-    if (maxDimension >= 36) return 320;
-    if (maxDimension >= 24) return 280;
-    return 240;
+  const getDisplayConfig = (painting: Painting): DisplayConfig => {
+    const area = painting.dimensions.width * painting.dimensions.height;
+    const featuredScale = painting.id === "2" ? 1.7 : painting.id === "3" ? 1.35 : 1;
+    const scaledArea = area * featuredScale;
+    const areaScale = Math.sqrt(scaledArea / BASELINE_AREA);
+
+    const columnSpan = areaScale > 1.08 ? 2 : 1;
+    const baseWidth = COLUMN_WIDTH * columnSpan;
+    const displayHeight = baseWidth * (painting.dimensions.height / painting.dimensions.width);
+    const rowSpan = Math.ceil((displayHeight + 16) / ROW_HEIGHT);
+
+    return {
+      baseWidth,
+      rowSpan,
+      columnSpan,
+    };
   };
 
   return (
@@ -51,13 +70,11 @@ export default function PaintingGrid() {
             <div key={painting.id} className={styles.gridItem}>
               <PaintingCard
                 painting={painting}
-                baseWidth={getBaseWidth(painting)}
                 onClick={() => setSelectedPainting(painting)}
               />
             </div>
           ))}
         </div>
-
         {filteredPaintings.length === 0 && (
           <div className={styles.noResults}>
             <p>No paintings found in this category.</p>

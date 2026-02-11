@@ -15,8 +15,8 @@ export default function AboutPage() {
             <img
               src={"/portrait.jpg"}
               alt={"Anna Headshot"}
-              width={600}
-              height={800}
+              width={500}
+              height={700}
               className={styles.paintingImage}
               draggable={false}
             />
