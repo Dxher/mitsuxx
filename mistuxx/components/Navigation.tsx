@@ -28,8 +28,13 @@ export default function Navigation() {
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.logo}>
-          <span className={styles.logoText}>Mistuxx</span>
-          <span className={styles.logoSubtext}>Art Studio</span>
+          <img
+            src="/logo-clear.png"
+            alt="Mistuxx logo"
+            width={180}
+            height={72}
+            className={styles.logoImage}
+          />
         </Link>
 
         <button

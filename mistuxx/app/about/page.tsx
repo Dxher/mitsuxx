@@ -8,13 +8,15 @@ export default function AboutPage() {
         <div className={styles.heroContent}>
           <span className={styles.eyebrow}>The Artist</span>
           <h1 className={styles.title}>Mistuxx - Anna</h1>
-          <p className={styles.subtitle}>Portrait painter</p>
+          <p className={styles.subtitle}>Lebanese-Canadian multidisciplinary artist</p>
         </div>
         <div className={styles.heroImage}>
           <div className={styles.imagePlaceholder}>
             <img
-              src={"/portrait.avif"}
+              src={"/portrait.jpg"}
               alt={"Anna Headshot"}
+              width={600}
+              height={800}
               className={styles.paintingImage}
               draggable={false}
             />
@@ -35,25 +37,23 @@ export default function AboutPage() {
             <span>Biography</span>
           </div>
           <div className={styles.content}>
-            <h2 className={styles.sectionTitle}>A Life Devoted to Art</h2>
+            <h2 className={styles.sectionTitle}>About the Artist</h2>
             <div className={styles.textColumns}>
               <p>
-                The journey began in the quiet studios of Portland, Oregon, where light filters 
-                through rain-kissed windows and inspiration lives in every shadow. From the earliest 
-                memories of watching paint swirl in water glasses to the disciplined practice of 
-                formal training, the path to becoming an artist was never a choice—it was an inevitability.
+                My name is Anna. I am a Lebanese-Canadian artist. I would describe myself as an acrylic portrait painter,
+                but that category does not fully include the exploration and experiments I pursue on a day-to-day basis.
+                Because of that, I also describe myself as a multidisciplinary artist.
               </p>
               <p>
-                After completing studies at the Pacific Northwest College of Art, years were spent 
-                traveling through Europe, absorbing the old masters while developing a distinctly 
-                contemporary voice. The influence of the Dutch Golden Age mingles with Abstract 
-                Expressionism, creating works that feel both timeless and urgently present.
+                My work is an interpretation of the world through my perspective and way of living. The use of color and
+                different faces allows me to explore the depth of something or someone I might see every day or only once.
               </p>
               <p>
-                Today, the studio practice involves long hours of observation before brush ever 
-                touches canvas. Each painting is a meditation—a slow, deliberate conversation 
-                between intention and intuition. The work demands patience from both creator and 
-                viewer, rewarding those who take time to look deeply.
+                The environment and setting each subject is placed into helps define who they are and how they wish to be
+                shown. Their personality is extracted into their surroundings so the composition visually complements them.
+                The experience I try to create for the viewer in each piece is observation and analysis beyond surface-level
+                portraiture. Every brush stroke is made to evoke emotion and immerse the viewer in the setting created by
+                the work.
               </p>
             </div>
           </div>
@@ -100,8 +100,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* Process Section */}
+      {/*
       <section className={styles.section}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionLabel}>
@@ -161,7 +160,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Recognition Section */}
       <section className={`${styles.section} ${styles.sectionDark}`}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionLabel}>
@@ -210,9 +208,10 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> 
+      */}
 
-      {/* Studio Section */}
+      {/* 
       <section className={styles.section}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionLabel}>
@@ -238,11 +237,7 @@ export default function AboutPage() {
               <div className={styles.studioDetails}>
                 <div className={styles.detailItem}>
                   <span className={styles.detailLabel}>Location</span>
-                  <span className={styles.detailValue}>Portland, Oregon</span>
-                </div>
-                <div className={styles.detailItem}>
-                  <span className={styles.detailLabel}>Visits</span>
-                  <span className={styles.detailValue}>By Appointment</span>
+                  <span className={styles.detailValue}>Ottawa, Ontario</span>
                 </div>
                 <div className={styles.detailItem}>
                   <span className={styles.detailLabel}>Commissions</span>
@@ -253,6 +248,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      */}
     </div>
   );
 }

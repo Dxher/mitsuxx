@@ -56,12 +56,20 @@
   font-size: 0.9rem;
   color: var(--color-ink-light);
   opacity: 0.8;
+  cursor: pointer;
 }
 
 .hintIcon {
   font-size: 1.5rem;
   animation: bounce 2s infinite;
+  cursor: pointer;
+  transition: opacity 2s ease;
 }
+
+.hintIcon:hover {
+  opacity: 0.7;
+}
+
 
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {

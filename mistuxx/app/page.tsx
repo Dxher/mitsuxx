@@ -1,3 +1,5 @@
+'use client';
+
 import PaintingGrid from "@/components/PaintingGrid";
 import styles from "./page.module.css";
 
@@ -12,10 +14,18 @@ export default function Home() {
             <span className={styles.titleLine}>Meets Soul</span>
           </h1>
           <p className={styles.heroSubtitle}>
-            Original paintings that capture emotions and dreams
+            Original paintings that capture emotions and people.
           </p>
           <div className={styles.heroHint}>
-            <span className={styles.hintIcon}>↓</span>
+            <span 
+              className={styles.hintIcon}
+              onClick={() => {
+                const element = document.getElementById('gallery');
+                element?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              ↓
+            </span>
           </div>
         </div>
         
@@ -26,7 +36,7 @@ export default function Home() {
       </section>
 
       {/* Gallery Section */}
-      <section className={styles.gallery}>
+      <section id="gallery" className={styles.gallery}>
         <h2 className={styles.sectionTitle}>The Collection</h2>
         <PaintingGrid />
       </section>
