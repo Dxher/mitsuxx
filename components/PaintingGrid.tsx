@@ -1,25 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { paintings, Painting } from "@/data/paintings";
 import PaintingCard from "./PaintingCard";
 import PaintingModal from "./PaintingModal";
+import Reveal from "@/components/ui/Reveal";
 import styles from "./PaintingGrid.module.css";
-
-const BASELINE_AREA = 36 * 48;
-const COLUMN_WIDTH = 240;
-const ROW_HEIGHT = 8;
-
-interface DisplayConfig {
-  baseWidth: number;
-  rowSpan: number;
-  columnSpan: number;
-}
 
 export default function PaintingGrid() {
   const [filter] = useState<string>("All");
   const [sortBy] = useState<string>("newest");
   const [selectedPainting, setSelectedPainting] = useState<Painting | null>(null);
+  const [delayById, setDelayById] = useState<Record<string, number>>({});
+  const gridRef = useRef<HTMLDivElement | null>(null);
 
   const filteredPaintings = paintings
     .filter((p) => filter === "All" || p.category === filter)
@@ -37,24 +30,91 @@ export default function PaintingGrid() {
           return 0;
       }
     });
+  const paintingOrderKey = filteredPaintings.map((p) => p.id).join("|");
 
-  const getDisplayConfig = (painting: Painting): DisplayConfig => {
-    const area = painting.dimensions.width * painting.dimensions.height;
-    const featuredScale = painting.id === "2" ? 1.7 : painting.id === "3" ? 1.35 : 1;
-    const scaledArea = area * featuredScale;
-    const areaScale = Math.sqrt(scaledArea / BASELINE_AREA);
+  useLayoutEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
 
-    const columnSpan = areaScale > 1.08 ? 2 : 1;
-    const baseWidth = COLUMN_WIDTH * columnSpan;
-    const displayHeight = baseWidth * (painting.dimensions.height / painting.dimensions.width);
-    const rowSpan = Math.ceil((displayHeight + 16) / ROW_HEIGHT);
+    const calculateDelays = () => {
+      const nodes = Array.from(
+        grid.querySelectorAll<HTMLElement>("[data-reveal-key]")
+      );
 
-    return {
-      baseWidth,
-      rowSpan,
-      columnSpan,
+      const positionedNodes = nodes.map((el) => {
+        const rect = el.getBoundingClientRect();
+        return { el, top: rect.top, left: rect.left };
+      });
+
+      const columnTolerance = 24;
+      const columnAnchors: number[] = [];
+      positionedNodes
+        .map((node) => node.left)
+        .sort((a, b) => a - b)
+        .forEach((left) => {
+          const isNewColumn = columnAnchors.every(
+            (anchor) => Math.abs(anchor - left) > columnTolerance
+          );
+          if (isNewColumn) {
+            columnAnchors.push(left);
+          }
+        });
+
+      const columns = columnAnchors.map(() => [] as typeof positionedNodes);
+      positionedNodes.forEach((node) => {
+        let columnIndex = 0;
+        let smallestDistance = Number.POSITIVE_INFINITY;
+
+        columnAnchors.forEach((anchor, index) => {
+          const distance = Math.abs(anchor - node.left);
+          if (distance < smallestDistance) {
+            smallestDistance = distance;
+            columnIndex = index;
+          }
+        });
+
+        columns[columnIndex].push(node);
+      });
+
+      columns.forEach((column) => {
+        column.sort((a, b) => a.top - b.top);
+      });
+
+      const sorted: HTMLElement[] = [];
+      const maxRows = Math.max(...columns.map((column) => column.length), 0);
+      for (let row = 0; row < maxRows; row += 1) {
+        for (let col = 0; col < columns.length; col += 1) {
+          const node = columns[col][row];
+          if (node) {
+            sorted.push(node.el);
+          }
+        }
+      }
+
+      const nextDelays: Record<string, number> = {};
+      sorted.forEach((el, index) => {
+        const key = el.dataset.revealKey;
+        if (key) {
+          // Keep a consistent stagger speed as the user scrolls:
+          // delay only by visual column position (left-to-right), not full list index.
+          const columnStaggerIndex = columns.length > 0 ? index % columns.length : 0;
+          nextDelays[key] = columnStaggerIndex * 120;
+        }
+      });
+
+      setDelayById(nextDelays);
     };
-  };
+
+    calculateDelays();
+    const resizeObserver = new ResizeObserver(calculateDelays);
+    resizeObserver.observe(grid);
+    window.addEventListener("resize", calculateDelays);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", calculateDelays);
+    };
+  }, [paintingOrderKey]);
 
   return (
     <>
@@ -65,14 +125,19 @@ export default function PaintingGrid() {
         </p>
 
         {/* Grid */}
-        <div className={styles.grid}>
+        <div ref={gridRef} className={styles.grid}>
           {filteredPaintings.map((painting) => (
-            <div key={painting.id} className={styles.gridItem}>
+            <Reveal
+              key={painting.id}
+              className={styles.gridItem}
+              delayMs={delayById[painting.id] ?? 0}
+              itemKey={painting.id}
+            >
               <PaintingCard
                 painting={painting}
                 onClick={() => setSelectedPainting(painting)}
               />
-            </div>
+            </Reveal>
           ))}
         </div>
         {filteredPaintings.length === 0 && (

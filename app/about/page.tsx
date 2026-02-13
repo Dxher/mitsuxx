@@ -13,7 +13,7 @@ export default function AboutPage() {
         <div className={styles.heroImage}>
           <div className={styles.imagePlaceholder}>
             <img
-              src={"/portrait.jpg"}
+              src={"/mitsuxx/portrait.jpg"}
               alt={"Anna Headshot"}
               width={500}
               height={700}

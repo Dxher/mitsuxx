@@ -10,6 +10,14 @@ export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const goHome = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setMenuOpen(false);
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -27,7 +35,7 @@ export default function Navigation() {
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
       <nav className={styles.nav}>
-        <Link href="/" className={styles.logo}>
+        <Link href="/" className={styles.logo} onClick={goHome}>
           <img
             src="/mitsuxx/logo-clear.png"
             alt="Mistuxx logo"
